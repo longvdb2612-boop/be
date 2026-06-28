@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeMoney Campus | Thiết Lập Hồ Sơ Hành Vi</title>
+    
+    <!-- CSS and Fonts -->
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Network Particles Canvas -->
+    <div id="particles-js" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -3; pointer-events: none;"></div>
+    
+    <!-- Subtle Grid Scan background -->
+    <div class="grid-bg"></div>
+    
+    <!-- Mouse Spotlight glow background -->
+    <div class="mouse-glow"></div>
+
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Header bar -->
+    <header class="app-header">
+        <div class="container header-container">
+            <div class="logo-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div class="logo-text">SafeMoney<span> Campus</span></div>
+            </div>
+            
+            <div class="header-stats">
+                <div class="stat-tag score" id="header-user-tag">
+                    <i class="fa-solid fa-user-clock"></i> Chào {{ user.fullname }}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 3rem;">
+        <div class="setup-layout">
+            <!-- Quiz card panel -->
+            <div class="setup-card glass-panel" style="min-height: 400px; display: flex; flex-direction: column; justify-content: space-between;">
+                <div id="quiz-container">
+                    <!-- Quiz Header & progress -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+                        <span id="quiz-progress" style="font-size: 0.8rem; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em;">Câu hỏi 1 / 3</span>
+                        <div style="width: 100px; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden;">
+                            <div id="quiz-progress-bar" style="width: 33%; height: 100%; background: var(--color-primary); transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question text -->
+                    <h3 id="quiz-question-title" style="font-family: var(--font-heading); font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.45; color: var(--text-primary);">Câu hỏi đang tải...</h3>
+                    
+                    <!-- Answers list -->
+                    <div id="quiz-answers" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 2rem;">
+                        <!-- Dynamic buttons loaded here -->
+                    </div>
+                    
+                    <!-- Back navigation -->
+                    <div style="display: flex; justify-content: flex-start;">
+                        <button class="btn btn-restart" id="btn-quiz-back" style="display: none; padding: 0.5rem 1.25rem; font-size: 0.8rem;">
+                            <i class="fa-solid fa-arrow-left"></i> Quay lại
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quiz Complete Result Summary -->
+                <div id="quiz-result" style="display: none; text-align: center; width: 100%;">
+                    <div style="font-size: 3rem; color: var(--color-safe); margin-bottom: 1rem; filter: drop-shadow(0 0 10px var(--color-safe-glow));">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <h3 style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem;">Khảo sát hoàn tất!</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 2rem;">Hệ thống đã phân tích các điểm mù tâm lý trong quyết định tài chính của bạn:</p>
+                    
+                    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.25rem;">
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.85rem 1.25rem; min-width: 100px; flex: 1;">
+                            <span style="font-size: 0.65rem; color: var(--text-secondary); display: block; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">FOMO</span>
+                            <strong id="result-fomo" style="font-size: 1.3rem; color: var(--color-primary);">50%</strong>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.85rem 1.25rem; min-width: 100px; flex: 1;">
+                            <span style="font-size: 0.65rem; color: var(--text-secondary); display: block; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">BỐC ĐỒNG</span>
+                            <strong id="result-imp" style="font-size: 1.3rem; color: var(--color-primary);">50%</strong>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.85rem 1.25rem; min-width: 100px; flex: 1;">
+                            <span style="font-size: 0.65rem; color: var(--text-secondary); display: block; text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">UY QUYỀN</span>
+                            <strong id="result-aut" style="font-size: 1.3rem; color: var(--color-primary);">50%</strong>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="btn-quiz-submit" style="width: 100%; justify-content: center; padding: 0.95rem;">
+                        Nhận Hộ Chiếu & Tích Lũy Điểm <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Informational sidebar -->
+            <div class="instruction-side-card glass-panel">
+                <h3><i class="fa-solid fa-brain" style="color: var(--color-primary);"></i> Trắc nghiệm hành vi</h3>
+                <p>Khác với khảo sát tĩnh thông thường, các câu hỏi trên được biên soạn bởi các chuyên gia tâm lý học hành vi nhằm bộc lộ phản ứng vô thức của bạn trước các kịch bản lừa đảo khẩn cấp.</p>
+                <p>Kết quả khảo sát này sẽ lập sơ đồ <strong>Hộ chiếu FBP</strong> và đồng bộ với điểm an toàn số <strong>DFSS</strong> của bạn trên Dashboard.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Client-side script to coordinate onboarding quiz and saving -->
+    <script>
+        const quizQuestions = [
+            {
+                title: "1. Bạn nhận được tin nhắn SMS thông báo Voucher mua sắm trị giá 50 triệu từ Shopee Campus sắp hết hạn chỉ trong 3 phút nữa. Bạn sẽ:",
+                answers: [
+                    { text: "A. Bấm ngay vào đường link để không bỏ lỡ quà tặng giá trị này.", fomo: 90, imp: 80, aut: 20 },
+                    { text: "B. Tò mò, do dự một lúc xem có nên nhấp vào xem thử hay không.", fomo: 60, imp: 50, aut: 15 },
+                    { text: "C. Xóa tin nhắn hoặc vào thẳng ứng dụng Shopee chính thống để xác minh.", fomo: 10, imp: 10, aut: 10 }
+                ]
+            },
+            {
+                title: "2. Có biến động số dư trừ 500k lạ trong tài khoản, kèm tin nhắn SMS hướng dẫn click link này để gửi khiếu nại đòi lại tiền khẩn cấp.",
+                answers: [
+                    { text: "A. Bấm link và nhập ngay tài khoản mật khẩu ngân hàng để đòi tiền gấp.", fomo: 20, imp: 95, aut: 40 },
+                    { text: "B. Lo lắng nhưng sẽ tìm hotline chính thức của ngân hàng để gọi xác nhận.", fomo: 10, imp: 40, aut: 20 },
+                    { text: "C. Bình tĩnh mở app ngân hàng tự tra cứu sao kê hoặc ra quầy giao dịch.", fomo: 10, imp: 10, aut: 10 }
+                ]
+            },
+            {
+                title: "3. Một người gọi điện tự xưng là Điều tra viên Bộ Công An nói số điện thoại của bạn dính vụ án rửa tiền, ép chuyển tiền bảo chứng điều tra.",
+                answers: [
+                    { text: "A. Hoảng sợ và chuẩn bị chuyển khoản theo hướng dẫn để chứng minh vô tội.", fomo: 10, imp: 55, aut: 95 },
+                    { text: "B. Nghi ngờ lo sợ, tìm cách thương lượng hoặc hỏi ý kiến người thân trước.", fomo: 10, imp: 30, aut: 50 },
+                    { text: "C. Biết chắc là lừa đảo giả mạo, cúp máy ngay lập tức và báo cáo số điện thoại.", fomo: 10, imp: 10, aut: 10 }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let answersChosen = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const questionTitle = document.getElementById('quiz-question-title');
+            const answersContainer = document.getElementById('quiz-answers');
+            const progressText = document.getElementById('quiz-progress');
+            const progressBar = document.getElementById('quiz-progress-bar');
+            const backBtn = document.getElementById('btn-quiz-back');
+            const submitBtn = document.getElementById('btn-quiz-submit');
+            const quizContainer = document.getElementById('quiz-container');
+            const resultPanel = document.getElementById('quiz-result');
+
+            loadQuestion();
+
+            function loadQuestion() {
+                const q = quizQuestions[currentQuestionIndex];
+                
+                // Update progress labels
+                progressText.textContent = `Câu hỏi ${currentQuestionIndex + 1} / 3`;
+                progressBar.style.width = `${((currentQuestionIndex + 1) / 3) * 100}%`;
+                
+                // Update question title
+                questionTitle.textContent = q.title;
+                
+                // Populate options
+                answersContainer.innerHTML = '';
+                q.answers.forEach((ans, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'preset-row';
+                    btn.style.width = '100%';
+                    btn.style.textAlign = 'left';
+                    btn.style.padding = '1rem 1.25rem';
+                    btn.innerHTML = `<span style="font-weight: 500;">${ans.text}</span>`;
+                    
+                    btn.addEventListener('click', () => {
+                        // Store chosen scores
+                        answersChosen[currentQuestionIndex] = ans;
+                        
+                        if (currentQuestionIndex < 2) {
+                            currentQuestionIndex++;
+                            loadQuestion();
+                        } else {
+                            displayQuizResults();
+                        }
+                    });
+                    answersContainer.appendChild(btn);
+                });
+
+                // Handle back button visibility
+                backBtn.style.display = currentQuestionIndex > 0 ? 'inline-flex' : 'none';
+            }
+
+            backBtn.addEventListener('click', () => {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    loadQuestion();
+                }
+            });
+
+            function displayQuizResults() {
+                quizContainer.style.display = 'none';
+                resultPanel.style.display = 'block';
+
+                // Computed values
+                const fomoVal = answersChosen[0].fomo;
+                const impVal = answersChosen[1].imp;
+                const autVal = answersChosen[2].aut;
+
+                document.getElementById('result-fomo').textContent = fomoVal + '%';
+                document.getElementById('result-imp').textContent = impVal + '%';
+                document.getElementById('result-aut').textContent = autVal + '%';
+            }
+
+            // Save profiling to backend db
+            submitBtn.addEventListener('click', async () => {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang khởi tạo...';
+
+                const fomo = answersChosen[0].fomo;
+                const impulsiveness = answersChosen[1].imp;
+                const authority = answersChosen[2].aut;
+
+                try {
+                    const response = await fetch('/api/profile/save', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ fomo, impulsiveness, authority })
+                    });
+                    const resData = await response.json();
+
+                    if (!response.ok) {
+                        if (window.showToast) window.showToast(resData.error || 'Có lỗi xảy ra khi lưu hồ sơ!', 'error');
+                        else alert(resData.error || 'Có lỗi xảy ra khi lưu hồ sơ!');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Nhận Hộ Chiếu & Tích Lũy Điểm <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+                        return;
+                    }
+
+                    if (window.showToast) {
+                        window.showToast("Chào mừng bạn bước vào SafeMoney Campus! +50 CC!", "success");
+                    } else {
+                        alert(`Chào mừng bạn bước vào SafeMoney Campus!\nHộ chiếu FBP của bạn đã được khởi tạo thành công.\nNhận thưởng +50 Campus Coins!`);
+                    }
+                    
+                    setTimeout(() => {
+                        window.location.href = '/app';
+                    }, 1500);
+
+                } catch (err) {
+                    if (window.showToast) window.showToast('Lỗi kết nối máy chủ! Vui lòng thử lại sau.', 'error');
+                    else alert('Lỗi kết nối máy chủ! Vui lòng thử lại sau.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Nhận Hộ Chiếu & Tích Lũy Điểm <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="/static/effects.js"></script>
+</body>
+</html>

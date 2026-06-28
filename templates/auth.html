@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeMoney Campus | Đăng Nhập & Đăng Ký Tài Khoản</title>
+    
+    <!-- CSS and Fonts -->
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .auth-error-alert {
+            display: none;
+            padding: 0.85rem 1.25rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Network Particles Canvas -->
+    <div id="particles-js" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -3; pointer-events: none;"></div>
+    
+    <!-- Subtle Grid Scan background -->
+    <div class="grid-bg"></div>
+    
+    <!-- Mouse Spotlight glow background -->
+    <div class="mouse-glow"></div>
+
+    <!-- Glow BGs -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <header class="app-header">
+        <div class="container header-container">
+            <a href="/" class="logo-box" style="text-decoration: none; color: inherit;">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div class="logo-text">SafeMoney<span> Campus</span></div>
+            </a>
+            <div class="header-stats">
+                <a href="/" class="stat-tag coins" style="text-decoration: none;">
+                    <i class="fa-solid fa-house"></i> Trang chủ
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="auth-wrapper">
+            <div class="auth-card glass-panel">
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" id="tab-btn-login">Đăng nhập</button>
+                    <button class="auth-tab-btn" id="tab-btn-register">Đăng ký</button>
+                </div>
+                
+                <!-- Feedback error messaging -->
+                <div class="auth-error-alert" id="auth-alert"></div>
+
+                <!-- Login Form -->
+                <form id="form-login" class="auth-form-panel active">
+                    <div class="slider-group">
+                        <label class="form-label-auth" for="login-username">Địa chỉ Email:</label>
+                        <input type="email" id="login-username" class="form-input-auth" placeholder="example@campus.edu.vn" required>
+                    </div>
+                    <div class="slider-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <label class="form-label-auth" for="login-pass" style="margin-bottom: 0;">Mật khẩu:</label>
+                            <a href="#" id="link-forgot-pw" style="color: var(--color-primary); font-size: 0.75rem; text-decoration: none; font-weight: 600;">Quên mật khẩu?</a>
+                        </div>
+                        <input type="password" id="login-pass" class="form-input-auth" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="justify-content: center; margin-top: 1rem;" id="login-submit-btn">
+                        <span>Đăng nhập</span> <i class="fa-solid fa-right-to-bracket"></i>
+                    </button>
+                </form>
+                
+                <!-- Register Form -->
+                <form id="form-register" class="auth-form-panel">
+                    <div class="slider-group">
+                        <label class="form-label-auth" for="reg-fullname">Họ và tên của bạn:</label>
+                        <input type="text" id="reg-fullname" class="form-input-auth" placeholder="Nguyễn Văn Long" required>
+                    </div>
+                    <div class="slider-group">
+                        <label class="form-label-auth" for="reg-username">Địa chỉ Email:</label>
+                        <input type="email" id="reg-username" class="form-input-auth" placeholder="example@campus.edu.vn" required>
+                    </div>
+                    <div class="slider-group">
+                        <label class="form-label-auth" for="reg-pass">Mật khẩu bảo mật:</label>
+                        <input type="password" id="reg-pass" class="form-input-auth" placeholder="Tạo mật khẩu..." required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="justify-content: center; margin-top: 1rem;" id="reg-submit-btn">
+                        <span>Đăng ký tài khoản</span> <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                </form>
+
+                <!-- Forgot Password Form -->
+                <form id="form-forgot-pw" class="auth-form-panel">
+                    <h3 style="font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 0.25rem;">Khôi phục mật khẩu</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.75rem; margin-bottom: 1.25rem; line-height: 1.4;">Nhập email đăng ký của bạn. Hệ thống sẽ tạo liên kết khôi phục dùng thử.</p>
+                    
+                    <div class="slider-group">
+                        <label class="form-label-auth" for="forgot-email">Địa chỉ Email:</label>
+                        <input type="email" id="forgot-email" class="form-input-auth" placeholder="example@campus.edu.vn" required>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+                        <button type="button" class="btn btn-restart" id="btn-forgot-back" style="flex: 1; padding: 0.75rem;">
+                            Quay lại
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btn-forgot-submit" style="flex: 2; padding: 0.75rem; justify-content: center;">
+                            <span>Gửi yêu cầu</span> <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Client-side logic for authentication requests -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabLogin = document.getElementById('tab-btn-login');
+            const tabRegister = document.getElementById('tab-btn-register');
+            const formLogin = document.getElementById('form-login');
+            const formRegister = document.getElementById('form-register');
+            const formForgot = document.getElementById('form-forgot-pw');
+            const linkForgot = document.getElementById('link-forgot-pw');
+            const btnForgotBack = document.getElementById('btn-forgot-back');
+            const alertBox = document.getElementById('auth-alert');
+
+            // URL param check to open register tab directly
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('tab') === 'register') {
+                switchToRegister();
+            }
+
+            tabLogin.addEventListener('click', switchToLogin);
+            tabRegister.addEventListener('click', switchToRegister);
+
+            function switchToLogin() {
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+                formLogin.classList.add('active');
+                formRegister.classList.remove('active');
+                formForgot.classList.remove('active');
+                hideAlert();
+            }
+
+            function switchToRegister() {
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+                formRegister.classList.add('active');
+                formLogin.classList.remove('active');
+                formForgot.classList.remove('active');
+                hideAlert();
+            }
+
+            function showAlert(msg) {
+                alertBox.textContent = msg;
+                alertBox.style.display = 'block';
+            }
+
+            function hideAlert() {
+                alertBox.style.display = 'none';
+            }
+
+            // Register Submit Action
+            formRegister.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideAlert();
+
+                const fullname = document.getElementById('reg-fullname').value.trim();
+                const email = document.getElementById('reg-username').value.trim();
+                const password = document.getElementById('reg-pass').value;
+
+                const submitBtn = document.getElementById('reg-submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.querySelector('span').textContent = 'Đang đăng ký...';
+
+                try {
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ fullname, email, password })
+                    });
+                    const resData = await response.get_json ? await response.get_json() : await response.json();
+
+                    if (!response.ok) {
+                        showAlert(resData.error || 'Có lỗi xảy ra trong quá trình đăng ký!');
+                        submitBtn.disabled = false;
+                        submitBtn.querySelector('span').textContent = 'Đăng ký tài khoản';
+                        return;
+                    }
+
+                    if (window.showToast) window.showToast(resData.message, 'success');
+                    else alert(resData.message);
+                    switchToLogin();
+                    document.getElementById('login-username').value = email;
+                    document.getElementById('login-pass').focus();
+
+                } catch (err) {
+                    showAlert('Lỗi kết nối máy chủ! Vui lòng thử lại sau.');
+                }
+                submitBtn.disabled = false;
+                submitBtn.querySelector('span').textContent = 'Đăng ký tài khoản';
+            });
+
+            // Login Submit Action
+            formLogin.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideAlert();
+
+                const email = document.getElementById('login-username').value.trim();
+                const password = document.getElementById('login-pass').value;
+
+                const submitBtn = document.getElementById('login-submit-btn');
+                submitBtn.disabled = true;
+                submitBtn.querySelector('span').textContent = 'Đang đăng nhập...';
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    const resData = await response.json();
+
+                    if (!response.ok) {
+                        showAlert(resData.error || 'Tài khoản hoặc mật khẩu không đúng!');
+                        submitBtn.disabled = false;
+                        submitBtn.querySelector('span').textContent = 'Đăng nhập';
+                        return;
+                    }
+
+                    // On successful authentication, redirect user to onboarding/app dashboard
+                    window.location.href = resData.redirect;
+
+                } catch (err) {
+                    showAlert('Lỗi kết nối máy chủ! Vui lòng thử lại sau.');
+                }
+                submitBtn.disabled = false;
+                submitBtn.querySelector('span').textContent = 'Đăng nhập';
+            });
+
+            // Toggle Forgot Password
+            linkForgot.addEventListener('click', (e) => {
+                e.preventDefault();
+                formLogin.classList.remove('active');
+                formRegister.classList.remove('active');
+                formForgot.classList.add('active');
+                hideAlert();
+            });
+            
+            btnForgotBack.addEventListener('click', () => {
+                formForgot.classList.remove('active');
+                formLogin.classList.add('active');
+                hideAlert();
+            });
+
+            // Forgot Submit Action
+            formForgot.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                hideAlert();
+
+                const email = document.getElementById('forgot-email').value.trim();
+                const submitBtn = document.getElementById('btn-forgot-submit');
+                submitBtn.disabled = true;
+                submitBtn.querySelector('span').textContent = 'Đang gửi...';
+
+                try {
+                    const response = await fetch('/api/forgot-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    const resData = await response.json();
+
+                    if (!response.ok) {
+                        showAlert(resData.error || 'Có lỗi xảy ra khi gửi yêu cầu!');
+                        submitBtn.disabled = false;
+                        submitBtn.querySelector('span').textContent = 'Gửi yêu cầu';
+                        return;
+                    }
+
+                    alert(resData.message);
+                    if (resData.console_link) {
+                        const copyLink = confirm("DÀNH CHO BẢN DEMO LÀM THỬ:\nHệ thống đã tạo liên kết đặt lại mật khẩu thành công.\n\nBạn có muốn tự động chuyển hướng sang trang đặt lại mật khẩu ngay không?");
+                        if (copyLink) {
+                            window.location.href = resData.console_link;
+                            return;
+                        }
+                    }
+                    btnForgotBack.click();
+
+                } catch (err) {
+                    showAlert('Lỗi kết nối máy chủ! Vui lòng thử lại sau.');
+                }
+                submitBtn.disabled = false;
+                submitBtn.querySelector('span').textContent = 'Gửi yêu cầu';
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="/static/effects.js"></script>
+</body>
+</html>

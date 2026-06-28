@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeMoney Campus | Dự Án Can Thiệp Hành Vi & Bảo Vệ Quyết Định Tài Chính</title>
+    
+    <!-- SEO & Icons -->
+    <meta name="description" content="Lá chắn tâm lý bảo vệ quyết định tài chính của học sinh sinh viên trước bẫy lừa đảo trực tuyến bằng cơ chế Safety Pause.">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .landing-hero {
+            min-height: calc(100vh - 120px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 0;
+        }
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+        .hero-title span {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-safe));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-lead {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            width: 100%;
+        }
+        .feature-card {
+            padding: 2.25rem;
+            text-align: left;
+        }
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--color-primary);
+            display: grid;
+            place-items: center;
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+        }
+        .feature-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Network Particles Canvas -->
+    <div id="particles-js" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -3; pointer-events: none;"></div>
+    
+    <!-- Subtle Grid Scan background -->
+    <div class="grid-bg"></div>
+    
+    <!-- Mouse Spotlight glow background -->
+    <div class="mouse-glow"></div>
+
+    <!-- Ambient Glows -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Simple Header -->
+    <header class="app-header">
+        <div class="container header-container">
+            <div class="logo-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div class="logo-text">SafeMoney<span> Campus</span></div>
+            </div>
+            
+            <div class="header-stats">
+                {% if user %}
+                    <a href="/app" class="stat-tag score" style="text-decoration: none;">
+                        <i class="fa-solid fa-user-shield"></i> {{ user.fullname }}
+                    </a>
+                {% else %}
+                    <a href="/login" class="stat-tag coins" style="text-decoration: none;">
+                        Đăng nhập <i class="fa-solid fa-right-to-bracket"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="landing-hero">
+            <h1 class="hero-title">Lá Chắn Bảo Vệ <br><span>Quyết Định Tài Chính Số</span></h1>
+            <p class="hero-lead">Hệ sinh thái can thiệp hành vi tâm lý, ngăn chặn nguy cơ sập bẫy lừa đảo trực tuyến dành riêng cho học sinh sinh viên Gen Z & Gen Alpha.</p>
+            
+            <div>
+                {% if user %}
+                    <a href="/app" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                        Truy cập ứng dụng <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                {% else %}
+                    <a href="/login" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem; margin-right: 1rem;">
+                        Bắt đầu trải nghiệm <i class="fa-solid fa-rocket"></i>
+                    </a>
+                    <a href="/login?tab=register" class="btn btn-secondary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+                        Đăng ký tài khoản
+                    </a>
+                {% endif %}
+            </div>
+
+            <!-- Features details block -->
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card glass-panel">
+                    <div class="feature-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3>Nhận Diện Hành Vi</h3>
+                    <p>Thiết lập Hộ chiếu FBP dựa trên các thanh trượt tâm lý như FOMO, bốc đồng hay phục tùng uy quyền ảo.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="feature-card glass-panel">
+                    <div class="feature-icon"><i class="fa-solid fa-user-lock"></i></div>
+                    <h3>Cơ Chế Safety Pause</h3>
+                    <p>Ngắt đứt đòn thao túng khẩn cấp bằng màn hình đếm ngược khóa hành vi, mở rộng không gian tư duy lý trí phản biện.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="feature-card glass-panel">
+                    <div class="feature-icon"><i class="fa-solid fa-coins"></i></div>
+                    <h3>Học Tập & Tích Điểm</h3>
+                    <p>Mô phỏng quét kịch bản lừa đảo thời gian thực, nhận thưởng Campus Coins để khẳng định hộ chiếu an toàn tài chính số.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Privacy / Cookie Consent Banner -->
+    <div id="privacy-banner" class="glass-panel" style="position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 600px; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 12px; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 16px; backdrop-filter: blur(20px); transition: opacity 0.3s ease;">
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <i class="fa-solid fa-cookie-bite" style="color: var(--color-primary); font-size: 1.5rem; margin-top: 2px;"></i>
+            <div>
+                <h4 style="margin: 0; font-family: var(--font-heading); font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">Quyền riêng tư & Bảo mật dữ liệu</h4>
+                <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 0.75rem; line-height: 1.45;">SafeMoney Campus thu thập thông tin ẩn danh về xu hướng hành vi tâm lý của bạn (FOMO, bốc đồng) để thiết lập Hộ chiếu tài chính FBP và điểm an toàn DFSS. Chúng tôi cam kết bảo mật 100% dữ liệu theo quy định pháp lý học đường.</p>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button class="btn btn-secondary" id="btn-privacy-decline" style="padding: 0.4rem 1rem; font-size: 0.75rem; border-radius: 8px;">Từ chối</button>
+            <button class="btn btn-primary" id="btn-privacy-accept" style="padding: 0.4rem 1rem; font-size: 0.75rem; border-radius: 8px;">Đồng ý & Tiếp tục</button>
+        </div>
+    </div>
+
+    <footer style="padding: 2.5rem 0; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 3rem;">
+        <div class="container">
+            <p>&copy; 2026 SafeMoney Campus Project. Lá chắn bảo vệ quyết định an toàn số học đường.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="/static/effects.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const banner = document.getElementById('privacy-banner');
+            const acceptBtn = document.getElementById('btn-privacy-accept');
+            const declineBtn = document.getElementById('btn-privacy-decline');
+
+            if (localStorage.getItem('cookie_consent') === 'true') {
+                banner.style.display = 'none';
+            }
+
+            acceptBtn.addEventListener('click', () => {
+                localStorage.setItem('cookie_consent', 'true');
+                banner.style.opacity = '0';
+                setTimeout(() => banner.style.display = 'none', 300);
+                if (window.showToast) window.showToast('Cảm ơn bạn đã chấp thuận chính sách bảo mật!', 'success');
+            });
+
+            declineBtn.addEventListener('click', () => {
+                banner.style.opacity = '0';
+                setTimeout(() => banner.style.display = 'none', 300);
+                if (window.showToast) window.showToast('Bạn đã từ chối chia sẻ Cookies, một số cấu hình có thể không lưu trữ lâu dài.', 'warning');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -2,11 +2,88 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Dự án của tôi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio của tôi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Xin chào thế giới!</h1>
-    <p>Đây là trang web tĩnh đầu tiên của tôi.</p>
+    <header class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <p class="eyebrow">Sinh viên Điện tử Viễn thông</p>
+                <h1>Xin chào, tôi là <span>Long</span></h1>
+                <p class="lead">Tôi đang học về công nghệ điện tử, viễn thông và thích khám phá các giải pháp kỹ thuật hiện đại.</p>
+                <div class="hero-actions">
+                    <a class="button primary" href="#projects">Xem dự án</a>
+                    <a class="button secondary" href="#contact">Liên hệ</a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="avatar">MN</div>
+                <h2>Long</h2>
+                <p>Yêu thích công nghệ, hệ thống điện tử và tìm hiểu về các ứng dụng thực tế của viễn thông.</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="about" class="section">
+            <div class="container section-grid">
+                <div>
+                    <h2>Về tôi</h2>
+                    <p>Tôi là sinh viên ngành Điện tử Viễn thông, đam mê học hỏi công nghệ mới và tìm hiểu về các hệ thống truyền thông, thiết bị điện tử và giải pháp kỹ thuật ứng dụng trong đời sống.</p>
+                </div>
+                <div class="info-box">
+                    <h3>Thông tin nhanh</h3>
+                    <ul>
+                        <li><strong>Vị trí:</strong> Sinh viên</li>
+                        <li><strong>Ngành:</strong> Điện tử Viễn thông</li>
+                        <li><strong>Sở thích:</strong> Công nghệ, điện tử, học hỏi và khám phá giải pháp mới</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section alt">
+            <div class="container">
+                <h2>Kỹ năng</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">Điện tử cơ bản</div>
+                    <div class="skill-card">Viễn thông</div>
+                    <div class="skill-card">Lập trình cơ bản</div>
+                    <div class="skill-card">Giải quyết vấn đề</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <div class="container">
+                <h2>Dự án tiêu biểu</h2>
+                <div class="projects-grid">
+                    <article class="project-card">
+                        <h3>Trang landing page</h3>
+                        <p>Thiết kế landing page hiện đại cho sản phẩm và dịch vụ.</p>
+                    </article>
+                    <article class="project-card">
+                        <h3>Portfolio cá nhân</h3>
+                        <p>Trang giới thiệu bản thân với bố cục rõ ràng và màu sắc bắt mắt.</p>
+                    </article>
+                    <article class="project-card">
+                        <h3>Website doanh nghiệp</h3>
+                        <p>Giao diện chuyên nghiệp cho các công ty nhỏ và startup.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section alt">
+            <div class="container contact-card">
+                <h2>Liên hệ</h2>
+                <p>Nếu bạn muốn làm việc cùng hoặc trao đổi ý tưởng, hãy gửi email cho tôi.</p>
+                <a class="button primary" href="mailto:yourname@email.com">Gửi email</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

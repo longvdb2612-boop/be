@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeMoney Campus | Bảng Điều Khiển & Mô Phỏng</title>
+    
+    <!-- CSS and Fonts -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Specific header controls overlay adjustments */
+        .header-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.4rem 0.75rem;
+            border-radius: 10px;
+            transition: var(--transition-smooth);
+        }
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Network Particles Canvas -->
+    <div id="particles-js" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -3; pointer-events: none;"></div>
+    
+    <!-- Subtle Grid Scan background -->
+    <div class="grid-bg"></div>
+    
+    <!-- Mouse Spotlight glow background -->
+    <div class="mouse-glow"></div>
+
+    <!-- Background glows -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- App Header -->
+    <header class="app-header" id="app-header">
+        <div class="container header-container">
+            <a href="./index.html" class="logo-box" style="text-decoration: none; color: inherit;">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div class="logo-text">SafeMoney<span> Campus</span></div>
+            </a>
+            
+            <div class="header-stats">
+                <!-- DFSS Widget -->
+                <div class="stat-tag score score-widget" title="Điểm an toàn tài chính số">
+                    <i class="fa-solid fa-shield-heart"></i> <span id="header-dfss">60/100 DFSS</span>
+                </div>
+                
+                <!-- Coin Widget -->
+                <div class="stat-tag coins coins-widget" title="Campus Coins tích lũy">
+                    <i class="fa-solid fa-coins"></i> <span id="header-coins">100 CC</span>
+                </div>
+                
+                <!-- Account Selector dropdown wrapper -->
+                <div class="accounts-dropdown-wrapper">
+                    <button class="header-btn" id="btn-header-switcher" title="Chuyển đổi tài khoản">
+                        <i class="fa-solid fa-circle-user" style="color: var(--color-primary); font-size: 1.2rem;"></i>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem; color: var(--text-secondary);"></i>
+                    </button>
+                    
+                    <div class="accounts-dropdown-panel" id="accounts-dropdown">
+                        <div class="dropdown-title">Chuyển tài khoản</div>
+                        <div id="accounts-list-container">
+                            <!-- Switch buttons are rendered here dynamically -->
+                        </div>
+                        <a href="./login.html?tab=register" class="add-account-link">
+                            <i class="fa-solid fa-plus"></i> Thêm tài khoản
+                        </a>
+                        <button class="logout-btn-dropdown" id="logout-btn-header" style="margin-top:8px; border-top: 1px solid var(--border-color); display:flex; align-items:center; gap:8px; width:100%; padding:0.6rem 0.75rem; background:transparent; border:none; color:#f87171; font-size:0.8rem; font-weight:600; cursor:pointer; border-radius:8px; transition:var(--transition-smooth);">
+                            <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 2rem;">
+        <!-- Tab buttons -->
+        <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 1.5rem;">
+            <button class="auth-tab-btn active tab-btn" id="tab-btn-dashboard" style="max-width: 200px;">Bảng điều khiển</button>
+            <button class="auth-tab-btn tab-btn" id="tab-btn-simulator" style="max-width: 200px;">Trình giả lập quét</button>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 1: DEDICATED TELEMETRY DASHBOARD -->
+        <!-- ========================================================================= -->
+        <div class="view-panel active" id="panel-dashboard">
+            <div class="dashboard-grid">
+                
+                <!-- Left: Donut DFSS Gauge Card -->
+                <div class="dash-score-card glass-panel">
+                    <div class="score-circle-container">
+                        <div class="gauge-wrapper">
+                            <svg class="gauge-svg" viewBox="0 0 160 160">
+                                <circle class="gauge-bg" cx="80" cy="80" r="70"></circle>
+                                <circle class="gauge-fill" id="dfss-fill" cx="80" cy="80" r="70"></circle>
+                            </svg>
+                            <div class="gauge-value" id="dfss-text-val">60<span>/100</span></div>
+                        </div>
+                        <h4 class="score-rating" id="lbl-score-rating">ĐANG PHÂN TÍCH...</h4>
+                        <p class="score-desc" id="lbl-score-desc">Hệ thống đang tiến hành tính toán hồ sơ dữ liệu an toàn số của bạn.</p>
+                    </div>
+                </div>
+                
+                <!-- Middle: Financial Behavior Passport with SVG Radar Chart -->
+                <div class="dash-passport-card glass-panel" style="overflow: hidden;">
+                    <div class="passport-card-content">
+                        <div class="passport-header">
+                            <div>
+                                <h3 style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.05em; color: var(--color-primary);">FBP PASSPORT</h3>
+                                <span style="font-size: 0.6rem; color: var(--text-muted); font-weight: 700; letter-spacing: 0.1em;">FINANCIAL BEHAVIORAL PROFILE</span>
+                            </div>
+                            <div class="passport-chip" title="NFC Microchip an toàn"></div>
+                        </div>
+                        
+                        <!-- Dual-column: Info details and spider-web graph -->
+                        <div class="passport-grid-visual">
+                            <div class="passport-details-column">
+                                <div class="passport-row-item">
+                                    <span>Chủ tài khoản (Holder)</span>
+                                    <strong id="lbl-fullname">Tải dữ liệu...</strong>
+                                </div>
+                                <div class="passport-row-item">
+                                    <span>Định danh email</span>
+                                    <strong id="lbl-email" style="font-size: 0.75rem; word-break: break-all;">Tải dữ liệu...</strong>
+                                </div>
+                                <div class="passport-row-item">
+                                    <span>Xếp hạng an toàn</span>
+                                    <strong id="lbl-classification" style="color: var(--color-primary);">TIER 2 GUARD</strong>
+                                </div>
+                            </div>
+                            
+                            <!-- SVG dynamic Radar Chart -->
+                            <div class="radar-box">
+                                <svg class="radar-svg" viewBox="0 0 120 120">
+                                    <!-- Back grid rings -->
+                                    <circle class="radar-grid" cx="60" cy="60" r="40"></circle>
+                                    <circle class="radar-grid" cx="60" cy="60" r="28"></circle>
+                                    <circle class="radar-grid" cx="60" cy="60" r="16"></circle>
+                                    
+                                    <!-- Axes lines -->
+                                    <!-- Top axis (FOMO) -->
+                                    <line class="radar-axis" x1="60" y1="60" x2="60" y2="20"></line>
+                                    <!-- Bottom Right axis (Impulsiveness) -->
+                                    <line class="radar-axis" x1="60" y1="60" x2="94.6" y2="80"></line>
+                                    <!-- Bottom Left axis (Authority Sensitivity) -->
+                                    <line class="radar-axis" x1="60" y1="60" x2="25.4" y2="80"></line>
+                                    
+                                    <!-- Parameter text markers -->
+                                    <text x="60" y="16" fill="var(--text-secondary)" font-size="6.5" font-weight="700" text-anchor="middle">FOMO</text>
+                                    <text x="100" y="86" fill="var(--text-secondary)" font-size="6.5" font-weight="700" text-anchor="middle">BỐC ĐỒNG</text>
+                                    <text x="20" y="86" fill="var(--text-secondary)" font-size="6.5" font-weight="700" text-anchor="middle">UY QUYỀN</text>
+                                    
+                                    <!-- Filled Dynamic Polygon representation -->
+                                    <polygon class="radar-polygon" id="radar-poly" points="60,60 60,60 60,60"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <!-- Core metrics summary stats -->
+                        <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 10px; font-size: 0.7rem; color: var(--text-secondary);">
+                            <div>FOMO: <strong id="lbl-fomo-val" style="color: var(--text-primary);">50%</strong></div>
+                            <div>Bốc đồng: <strong id="lbl-imp-val" style="color: var(--text-primary);">50%</strong></div>
+                            <div>Uy quyền: <strong id="lbl-aut-val" style="color: var(--text-primary);">50%</strong></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Tasks / Rewards Ledger Card -->
+                <div class="dash-rewards-card glass-panel">
+                    <h3 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; margin-bottom: 1rem;">Nhiệm vụ nhận Coins</h3>
+                    <div class="ledger-wrapper">
+                        <!-- Task 1 -->
+                        <div class="ledger-row" id="ledger-task-1">
+                            <div class="ledger-info">
+                                <i class="fa-solid fa-id-card"></i>
+                                <span>Khảo sát hồ sơ hành vi FBP</span>
+                            </div>
+                            <span class="coin-plus">+50 CC</span>
+                        </div>
+                        <!-- Task 2 -->
+                        <div class="ledger-row" id="ledger-task-2">
+                            <div class="ledger-info">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                <span>Quét tin nhắn đáng ngờ đầu tiên</span>
+                            </div>
+                            <span class="coin-plus">+20 CC</span>
+                        </div>
+                        <!-- Task 3 -->
+                        <div class="ledger-row" id="ledger-task-3">
+                            <div class="ledger-info">
+                                <i class="fa-solid fa-ban"></i>
+                                <span>Hủy giao dịch tại Safety Pause</span>
+                            </div>
+                            <span class="coin-plus">+30 CC</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem; text-align: center; background: rgba(255,255,255,0.01); border: 1px dashed var(--border-color); border-radius: 12px; padding: 1rem;">
+                        <span style="font-size: 0.65rem; color: var(--text-secondary); display: block; text-transform: uppercase; font-weight: 700;">Ví Campus Coins</span>
+                        <strong id="dashboard-coins-val" style="font-size: 1.3rem; color: var(--color-coin); font-family: var(--font-heading); filter: drop-shadow(0 0 10px rgba(250,204,21,0.2));">100 CC</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scanning transaction logs -->
+            <div class="glass-panel" style="margin-top: 1.5rem; padding: 1.5rem 2rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem;">
+                    <i class="fa-solid fa-receipt" style="color: var(--color-primary);"></i> Nhật ký quét bảo mật
+                </h3>
+                <div class="history-table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Nội dung tin nhắn</th>
+                                <th style="width: 15%;">Rủi ro DRS</th>
+                                <th style="width: 20%;">Quyết định</th>
+                                <th style="width: 15%;">Thời gian</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scans-history-body">
+                            <!-- Dynamic records synced here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Dashboard footer logout button -->
+            <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+                <button class="btn btn-restart" id="btn-logout-direct" style="padding: 0.55rem 1.25rem; font-size: 0.8rem; border-radius: 10px; color:#f87171; border-color: rgba(239, 68, 68, 0.15); background: rgba(239, 68, 68, 0.02);">
+                    <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất tài khoản
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- VIEW 2: SCAM SIMULATOR SCANNER -->
+        <!-- ========================================================================= -->
+        <div class="view-panel" id="panel-simulator">
+            <div class="simulator-layout">
+                <!-- Simulator core scanning console -->
+                <div class="sim-left-panel glass-panel">
+                    <h2 style="font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--color-primary);">Mô phỏng quét mã độc & tin nhắn lừa đảo</h2>
+                    <p style="color: var(--text-secondary); font-size: 0.8rem; margin-bottom: 1.5rem;">Chọn một trong các kịch bản lừa đảo tài chính soạn sẵn ở bảng bên phải hoặc nhập một tin nhắn đáng ngờ tùy ý để kiểm tra chỉ số rủi ro quyết định.</p>
+                    
+                    <textarea class="text-input" id="text-input" placeholder="Chọn kịch bản lừa đảo hoặc dán nội dung tin nhắn đáng ngờ vào đây để phân tích..."></textarea>
+                    
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="btn btn-secondary" id="btn-clear-text" onclick="document.getElementById('text-input').value = ''" style="padding: 0.7rem 1.25rem;">Xóa</button>
+                        <button class="btn btn-primary" id="btn-start-scan" style="padding: 0.7rem 1.5rem;">
+                            Quét phân tích AI <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Dynamic simulator status side panel -->
+                <div class="sim-right-panel glass-panel" style="min-height: 280px; justify-content: center;">
+                    <!-- Placeholder status -->
+                    <div id="placeholder-view" style="text-align: center; padding: 2rem 0;">
+                        <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem; animation: iconPulse 2s infinite alternate;"></i>
+                        <p style="color: var(--text-secondary); font-size: 0.8rem; max-width: 220px; margin: 0 auto;">Chờ lệnh quét từ bảng điều khiển console...</p>
+                    </div>
+                    
+                    <!-- Loading scanner progress -->
+                    <div id="progress-view" class="scan-progress-box" style="display: none;">
+                        <div class="progress-container">
+                            <div class="inner-bar" id="inner-bar"></div>
+                        </div>
+                        <div class="step-log-list">
+                            <div class="step-log-item" id="log-step-1">
+                                <i class="fa-solid fa-circle-check"></i> Phân tích ngữ cảnh đe dọa / thúc giục
+                            </div>
+                            <div class="step-log-item" id="log-step-2">
+                                <i class="fa-solid fa-circle-check"></i> Tra cứu danh bạ & IP máy chủ liên kết
+                            </div>
+                            <div class="step-log-item" id="log-step-3">
+                                <i class="fa-solid fa-circle-check"></i> Lập chỉ số điểm rủi ro DRS tổng quát
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Result View output -->
+                    <div id="result-view" style="display: none; animation: slideUpFade 0.4s ease;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                            <span style="font-size: 0.7rem; color: var(--text-secondary); font-weight: 700; text-transform: uppercase;">Chỉ số Rủi ro quyết định (DRS)</span>
+                            <strong id="lbl-result-drs" style="color: var(--color-danger); font-size: 1.15rem; font-family: var(--font-heading);">85/100</strong>
+                        </div>
+                        <h4 id="lbl-result-verdict" style="font-family: var(--font-heading); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--color-danger);">CẢNH BÁO NGUY HIỂM</h4>
+                        <p id="lbl-result-desc" style="color: var(--text-secondary); font-size: 0.78rem; line-height: 1.5; margin-bottom: 1.25rem;">Nội dung chứa cấu trúc đe dọa khẩn cấp ép buộc chuyển tiền hoặc click link độc hại.</p>
+                        
+                        <div style="background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.75rem 1rem; font-size: 0.75rem; color: var(--text-secondary);">
+                            <i class="fa-solid fa-circle-info" style="color: var(--color-primary); margin-right: 6px;"></i>
+                            Mức điểm DRS lớn hơn 70 sẽ kích hoạt khóa can thiệp tâm lý Safety Pause.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scam Preset Scenarios Catalog -->
+            <div class="glass-panel" style="margin-top: 1.5rem;">
+                <h3 style="font-family: var(--font-heading); font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-list-check" style="color: var(--color-primary);"></i> Kịch bản lừa đảo mô phỏng
+                </h3>
+                <div class="scan-preset-list">
+                    <!-- Preset 1 -->
+                    <button class="preset-row" data-score="85" data-target="fomo" style="width: 100%; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="preset-text" style="font-weight: 600;">[Shopee] Voucher tặng thưởng sinh viên 50 triệu đồng sắp hết hạn chỉ trong 3 phút, click http://shopee-campus-voucher.gift để nhận!</span>
+                        <span class="stat-tag score" style="color: var(--color-warning); font-size: 0.65rem;">FOMO (85 DRS)</span>
+                    </button>
+                    <!-- Preset 2 -->
+                    <button class="preset-row" data-score="92" data-target="authority" style="width: 100%; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="preset-text" style="font-weight: 600;">[BIDV Alert] Tai khoan cua quy khach hien dang lien quan den an hanh vi rua tien. Vui long click nhap thong tin tai http://bidv-secure-verification.login de tránh bị phong tỏa.</span>
+                        <span class="stat-tag score" style="color: var(--color-danger); font-size: 0.65rem;">UY QUYỀN (92 DRS)</span>
+                    </button>
+                    <!-- Preset 3 -->
+                    <button class="preset-row" data-score="30" data-target="impulsiveness" style="width: 100%; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="preset-text" style="font-weight: 600;">[BK Campus] Thong bao: Lich dong hoc phi hoc ky 1 se duoc mo tu ngay mai tren he thong cong tin chính thuc SIS.</span>
+                        <span class="stat-tag score" style="color: var(--color-safe); font-size: 0.65rem;">TIN NHẮN THƯỜNG (30 DRS)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ========================================================================= -->
+    <!-- SAFETY PAUSE COUNTDOWN LOCK MODAL OVERLAY -->
+    <!-- ========================================================================= -->
+    <div class="safety-pause-overlay" id="safety-pause-modal">
+        <div class="safety-pause-box">
+            <div class="pause-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            
+            <h2 class="pause-head-title">SAFETY PAUSE ACTIVATED</h2>
+            <p class="pause-desc-lead">Hệ thống đang ngắt đòn thao túng khẩn cấp để bảo vệ giao dịch của bạn.</p>
+            
+            <!-- Self-reflection questions card -->
+            <div class="reflection-question-card">
+                <div class="ref-title">
+                    <i class="fa-solid fa-lightbulb"></i> Câu hỏi tự vấn thức tỉnh tư duy lý trí:
+                </div>
+                <p class="ref-text" id="pause-question">Tại sao họ lại liên tục ép buộc bạn phải thực hiện giao dịch khẩn cấp này mà không cho phép bạn kiểm tra chéo độc lập?</p>
+            </div>
+            
+            <!-- Countdown circle loader -->
+            <div class="timer-ring-container">
+                <svg class="timer-svg" viewBox="0 0 100 100">
+                    <circle class="timer-ring-bg" cx="50" cy="50" r="45"></circle>
+                    <circle class="timer-ring-fill" id="timer-ring-fill" cx="50" cy="50" r="45"></circle>
+                </svg>
+                <div class="timer-text-display" id="timer-text">30</div>
+            </div>
+            
+            <div class="pause-buttons-wrap">
+                <button type="button" class="btn btn-abort-action" id="btn-pause-abort">
+                    <i class="fa-solid fa-ban"></i> Hủy giao dịch (Khuyên dùng)
+                </button>
+                <button type="button" class="btn btn-continue-action" id="btn-pause-continue" disabled>
+                    <span>Tiếp tục giao dịch (Bị khóa)</span> <i class="fa-solid fa-triangle-exclamation"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./assets/particles.min.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>
